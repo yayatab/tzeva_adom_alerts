@@ -1,0 +1,21 @@
+#! /usr/bin/python3
+
+import requests
+import os
+import json
+import time
+headers = {
+  'Accept': 'text/plain, */*; q=0.01',
+  'Referer': 'https://www.oref.org.il/12481-he/Pakar.aspx',
+  'X-Requested-With': 'XMLHttpRequest',
+}
+while True:
+  resp = requests.get('https://www.oref.org.il/WarningMessages/alert/alerts.json', headers=headers).text
+  if resp:
+    data = json.loads(resp)['data']
+    print(data)
+    if os.sys.platform == 'linux':
+      os.system(f'notify-send "{data}"')
+    else:
+      os.system(f'say tseva ad om "{data}"') # not tested
+  time.sleep(5)
